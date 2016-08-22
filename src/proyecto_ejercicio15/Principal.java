@@ -5,6 +5,8 @@
  */
 package proyecto_ejercicio15;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author GABRIEL
@@ -49,7 +51,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel2.setText("El moto total a pagar es:");
+        jLabel2.setText("El monto total a pagar es:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, -1, -1));
 
         txtTotal.setEditable(false);
@@ -57,26 +59,42 @@ public class Principal extends javax.swing.JFrame {
 
         cmdBorrar.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cmdBorrar.setText("Borrar");
+        cmdBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdBorrarActionPerformed(evt);
+            }
+        });
         jPanel1.add(cmdBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, 90, 30));
 
         cmdCalcular.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         cmdCalcular.setText("Calcular");
+        cmdCalcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdCalcularActionPerformed(evt);
+            }
+        });
         jPanel1.add(cmdCalcular, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 90, 30));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel3.setText("Digite el monto del préstamo:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
+
+        txtPrestamo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrestamoKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtPrestamo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 210, 30));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel4.setText("El moto de las cuotas especiales es:");
+        jLabel4.setText("El monto de las cuotas especiales es:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, -1));
 
         txtCuotasEsp.setEditable(false);
         jPanel1.add(txtCuotasEsp, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 270, 210, 30));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        jLabel5.setText("El moto de las cuotas ordinarias es:");
+        jLabel5.setText("El monto de las cuotas ordinarias es:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, -1, -1));
 
         txtCuotasOrd.setEditable(false);
@@ -97,6 +115,50 @@ public class Principal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmdBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarActionPerformed
+        // TODO add your handling code here:
+        txtPrestamo.setText("");
+        txtTotal.setText("");
+        txtCuotasEsp.setText("");
+        txtCuotasOrd.setText("");
+        txtPrestamo.requestFocusInWindow();
+    }//GEN-LAST:event_cmdBorrarActionPerformed
+
+    private void txtPrestamoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrestamoKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) && c != '.') {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (c == '.' && txtPrestamo.getText().contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPrestamoKeyTyped
+
+    private void cmdCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCalcularActionPerformed
+        // TODO add your handling code here:
+        if (txtPrestamo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Campo vacío. Por favor llénelo", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtPrestamo.requestFocusInWindow();
+        }
+        else if (txtPrestamo.getText().equals(".")) {
+            JOptionPane.showMessageDialog(this, "No puede operar puntos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtPrestamo.setText("");
+            txtPrestamo.requestFocusInWindow();
+        }
+        else {
+            double prestamo, total, cuotasE, cuotasO;
+            prestamo = Double.parseDouble(txtPrestamo.getText());
+            total = (prestamo * 0.24) + prestamo;
+            cuotasE = (total / 2) /4;
+            cuotasO = (total /2) / 20;
+            txtTotal.setText(""+total);
+            txtCuotasEsp.setText(""+cuotasE);
+            txtCuotasOrd.setText(""+cuotasO);
+        }
+    }//GEN-LAST:event_cmdCalcularActionPerformed
 
     /**
      * @param args the command line arguments
